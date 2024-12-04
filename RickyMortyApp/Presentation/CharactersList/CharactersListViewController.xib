@@ -10,6 +10,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CharactersListViewController" customModule="RickyMortyApp" customModuleProvider="target">
             <connections>
+                <outlet property="spinner" destination="Kmj-5X-7Rv" id="JAm-GD-owB"/>
                 <outlet property="tableView" destination="8bo-hE-qhO" id="lTO-bS-RNc"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -23,13 +24,18 @@
                     <rect key="frame" x="0.0" y="59" width="393" height="759"/>
                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                 </tableView>
+                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="Kmj-5X-7Rv">
+                    <rect key="frame" x="186.66666666666666" y="416" width="20" height="20"/>
+                </activityIndicatorView>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
                 <constraint firstItem="8bo-hE-qhO" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="Hkz-fh-KLQ"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="8bo-hE-qhO" secondAttribute="trailing" id="SYr-fN-4pi"/>
+                <constraint firstItem="Kmj-5X-7Rv" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="YgZ-mr-R0p"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="8bo-hE-qhO" secondAttribute="bottom" id="h1s-Tv-ibb"/>
+                <constraint firstItem="Kmj-5X-7Rv" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="mI1-5p-voz"/>
                 <constraint firstItem="8bo-hE-qhO" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="xm4-bn-0nk"/>
             </constraints>
             <point key="canvasLocation" x="33" y="-11"/>

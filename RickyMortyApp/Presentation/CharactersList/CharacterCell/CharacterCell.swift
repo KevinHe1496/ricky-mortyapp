@@ -13,6 +13,7 @@ class CharacterCell: UITableViewCell {
 
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var characterImageView: UIImageView!
+    @IBOutlet weak var speciesLabel: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()

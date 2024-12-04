@@ -10,6 +10,7 @@ import UIKit
 class CharactersListViewController: UIViewController {
     
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var spinner: UIActivityIndicatorView!
     
     private let viewModel: CharactersListViewModel
     
@@ -42,9 +43,12 @@ class CharactersListViewController: UIViewController {
                 
             case .loading:
                 print("cargando")
+                self.spinner.startAnimating()
             case .success:
+                self.spinner.stopAnimating()
                 self.tableView.reloadData()
             case .error:
+                self.spinner.stopAnimating()
                 print("Error al cargar los datos en el VC")
             }
         }
@@ -64,6 +68,7 @@ extension CharactersListViewController: UITableViewDelegate, UITableViewDataSour
         let character = viewModel.characters[indexPath.row]
         
         cell.nameLabel.text = character.name
+        cell.speciesLabel.text = character.species
         
         if let urlPhoto = URL(string: character.image)  {
             cell.characterImageView.loadImageRemote(url: urlPhoto)
