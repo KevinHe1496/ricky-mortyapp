@@ -13,6 +13,9 @@ class CharactersListViewController: UIViewController {
     @IBOutlet weak var spinner: UIActivityIndicatorView!
     
     private let viewModel: CharactersListViewModel
+    var searchController: UISearchController!
+    var filteredCharacter: [ResultsCharacters] = [ResultsCharacters]()
+    
     
     init(viewModel: CharactersListViewModel) {
         self.viewModel = viewModel
@@ -25,10 +28,23 @@ class CharactersListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        title = "Lista de Personajes"
+        ConfigSearchBar()
         setUpTableView()
-        self.title = "Lista de Personajes"
         BindingUI()
         
+    }
+    
+    private func ConfigSearchBar() {
+        searchController = UISearchController(searchResultsController: nil)
+        searchController.searchResultsUpdater = self
+        searchController.searchBar.delegate = self // Asigna el delegado
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = "Buscar personaje"
+        searchController.hidesNavigationBarDuringPresentation = true
+        navigationItem.searchController = searchController
+        navigationItem.hidesSearchBarWhenScrolling = false
+        definesPresentationContext = true
     }
     
     private func setUpTableView() {
@@ -46,6 +62,7 @@ class CharactersListViewController: UIViewController {
                 self.spinner.startAnimating()
             case .success:
                 self.spinner.stopAnimating()
+                self.filteredCharacter = self.viewModel.characters
                 self.tableView.reloadData()
             case .error:
                 self.spinner.stopAnimating()
@@ -59,13 +76,13 @@ class CharactersListViewController: UIViewController {
 extension CharactersListViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.characters.count
+        return filteredCharacter.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: CharacterCell.identifier, for: indexPath) as! CharacterCell
         
-        let character = viewModel.characters[indexPath.row]
+        let character = filteredCharacter[indexPath.row]
         
         cell.nameLabel.text = character.name
         cell.speciesLabel.text = character.species
@@ -73,11 +90,36 @@ extension CharactersListViewController: UITableViewDelegate, UITableViewDataSour
         if let urlPhoto = URL(string: character.image)  {
             cell.characterImageView.loadImageRemote(url: urlPhoto)
         }
-        
-        
-        
+   
         return cell
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let character = viewModel.characters[indexPath.row]
+        print("Has seleccionado a: \(character)")
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
     
+}
+
+
+extension CharactersListViewController: UISearchResultsUpdating, UISearchBarDelegate {
+    func updateSearchResults(for searchController: UISearchController) {
+        let searchText = searchController.searchBar.text ?? ""
+        if searchText.isEmpty {
+            filteredCharacter = viewModel.characters
+        } else {
+            filteredCharacter = viewModel.characters.filter({ character in
+                character.name.lowercased().contains(searchText.lowercased())
+            })
+        }
+        
+        tableView.reloadData()
+    }
+    
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        filteredCharacter = viewModel.characters // Restaura la lista original
+        tableView.reloadData()          // Recarga la tabla
+    }
 }

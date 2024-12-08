@@ -10,7 +10,7 @@ import Foundation
 enum CharacterState {
     case loading
     case success
-    case error
+    case error(reason: String)
 }
 
 final class CharactersListViewModel {
@@ -38,7 +38,7 @@ final class CharactersListViewModel {
             }
         } catch {
             print("Error al cargar los personajes en el VM: \(error.localizedDescription)")
-            self.onStateChanged.update(newValue: .error)
+            self.onStateChanged.update(newValue: .error(reason: error.localizedDescription))
         }
     }
 }
