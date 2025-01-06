@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Combine
 
 class CharactersListViewController: UIViewController {
     
@@ -15,6 +16,7 @@ class CharactersListViewController: UIViewController {
     private let viewModel: CharactersListViewModel
     var searchController: UISearchController!
     var filteredCharacter: [ResultsCharacters] = [ResultsCharacters]()
+    var suscriptors = Set<AnyCancellable>()
     
     
     init(viewModel: CharactersListViewModel) {
@@ -97,6 +99,8 @@ extension CharactersListViewController: UITableViewDelegate, UITableViewDataSour
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let character = viewModel.characters[indexPath.row]
         print("Has seleccionado a: \(character)")
+        let VC = CharacterDetailViewController(viewModel: CharacteDetailViewModel(singleCharacter: character))
+        navigationController?.pushViewController(VC, animated: true)
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
@@ -106,6 +110,7 @@ extension CharactersListViewController: UITableViewDelegate, UITableViewDataSour
 extension CharactersListViewController: UISearchResultsUpdating, UISearchBarDelegate {
     func updateSearchResults(for searchController: UISearchController) {
         let searchText = searchController.searchBar.text ?? ""
+        
         if searchText.isEmpty {
             filteredCharacter = viewModel.characters
         } else {

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Combine
 
 enum CharacterState {
     case loading
@@ -13,12 +14,12 @@ enum CharacterState {
     case error(reason: String)
 }
 
-final class CharactersListViewModel {
+final class CharactersListViewModel: ObservableObject {
     
     private let useCase: CharactersUseCaseProtocol
     
-    var onStateChanged = Binding<CharacterState>()
-    private(set) var characters: [ResultsCharacters] = []
+    @Published var onStateChanged = Binding<CharacterState>()
+    @Published private(set) var characters: [ResultsCharacters] = []
     
     init(useCase: CharactersUseCaseProtocol = CharactersUseCase()) {
         self.useCase = useCase

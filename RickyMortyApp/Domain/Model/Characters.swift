@@ -16,5 +16,7 @@ struct ResultsCharacters: Decodable, Equatable {
     let id: Int
     let name: String
     let species: String
+    let gender: String
+    let status: String
     let image: String
 }
